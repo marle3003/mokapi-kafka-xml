@@ -1,0 +1,84 @@
+asyncapi: '3.0.0'
+info:
+  title: Kafka XML Example
+  version: 1.0.0
+  description: |
+    A legacy system produces XML messages and sends them to Kafka.
+    A microservice consumes the XML topic, transforms it to JSON, and publishes
+    the result into another Kafka topic.
+
+servers:
+  kafka-broker:
+    host: localhost:9092
+    protocol: kafka
+    description: Local Kafka instance
+
+channels:
+  userCreated:
+    address: user.created
+    messages:
+      UserCreatedMessage:
+        $ref: '#/components/messages/UserCreatedMessageXml'
+  userTransformed:
+    address: user.transformed
+    messages:
+      UserCreatedMessage:
+        $ref: '#/components/messages/UserCreatedMessageJson'
+
+operations:
+  sendUserCreated:
+    channel:
+      $ref: '#/channels/userCreated'
+    action: 'send'
+  onUserCreated:
+    channel:
+      $ref: '#/channels/userCreated'
+    action: 'receive'
+  sendUserTransformed:
+    channel:
+      $ref: '#/channels/userTransformed'
+    action: 'send'
+  onUserTransformed:
+    channel:
+      $ref: '#/channels/userTransformed'
+    action: 'receive'
+
+components:
+  messages:
+    UserCreatedMessageXml:
+      contentType: application/xml
+      payload:
+        $ref: '#/components/schemas/UserCreatedXml'
+    UserCreatedMessageJson:
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/UserCreated'
+
+  schemas:
+    UserCreatedXml:
+      schemaFormat: application/vnd.oai.openapi;version=3.0.0
+      schema:
+        type: object
+        xml:
+          name: user
+        properties:
+          id:
+            type: string
+            xml:
+              attribute: true
+          name:
+            type: string
+          email:
+            type: string
+            xml:
+              name: emailAddress
+    UserCreated:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+      required: [ id, name, email ]

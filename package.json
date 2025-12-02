@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/mokapi": "^0.29.0",
+    "kafkajs": "^2.2.4",
+    "node-fetch": "^3.3.2",
+    "xml2js": "^0.6.2"
+  }
+}
