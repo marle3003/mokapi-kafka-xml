@@ -5,7 +5,7 @@ const MOKAPI_API = 'http://localhost:8080/api/services/kafka/Kafka%20XML%20Examp
 const TOPIC_XML = 'user.created';
 const TOPIC_JSON = 'user.transformed';
 
-test('Kafka document send workflow', async () => {
+test('Kafka XML transform workflow', async () => {
     const userId = 'user-' + Date.now();
     let startOffset = -1
     await test.step(`Get current offset for ${TOPIC_JSON}`, async () => {
